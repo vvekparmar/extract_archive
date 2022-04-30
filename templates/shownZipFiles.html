@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+Shown Files from Zip
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+function download_all(){
+    var file_names = JSON.parse({{ json_file_names | tojson }})
+    $.ajax({
+          url: '/',
+          success: function(data) {
+          file_names.forEach((file) => {
+             for(let i=0; i<file.length; i++){
+                console.log(file[i])
+                var blob=new Blob([data]);
+                var link=document.createElement('a');
+                link.href=window.URL.createObjectURL(blob);
+                link.download=file[i];
+                link.click();
+            }
+          })
+       }
+    });
+}
+</script>
+{% endblock %}
+
+{% block header %}
+Shown Files from Zip
+{% endblock %}
+
+{% block content %}
+
+<div style="margin:1% 0% 1% 0%; font-size:22px; margin-left:5%; float:left" >
+    <a class="text-dark" href="{{ url_for('upload_route') }}">Back to Upload!</a>
+</div>
+
+<div style="margin:1% 0% 1% 0%; font-size:22px; margin-right:5%; float:right">
+    <a class="text-dark" href="#" onclick=download_all()>Download All!</a>
+</div>
+
+<div style="margin: 1% 5% 0% 5%;">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Filename</th>
+                <th scope="col">Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+                {% for f in range(file|length) %}
+                <tr>
+                    <td>{{ file[f] }}</td>
+                    <td><a href="{{ url_for('download_file', file_name=file[f]) }}">Click Here!</a></td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

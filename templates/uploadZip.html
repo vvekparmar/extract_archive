@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+Upload Zip File
+{% endblock %}
+
+{% block header %}
+Upload Zip File
+{% endblock %}
+
+
+{% block content %}
+<div style="margin: 6% 10% 10% 30%;">
+ <form method="POST"  enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        {{ form.file(class="btn btn-lg btn-muted")}}
+        <button type="submit" class="btn btn-lg btn-dark">Upload</button>
+    </form>
+</div>
+{% endblock %}
